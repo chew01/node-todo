@@ -1,12 +1,14 @@
 import { colorChangeOnTabHover, colorChangeAfterTabHover, colorChangeOnXHover, colorChangeAfterXHover } from "./animations";
-import { projectFactory } from "./project";
 
 const tabList = document.querySelector("#header ul");
+const addProjectButton = document.querySelector("#add");
+addProjectButton.addEventListener("mouseover", () => {colorChangeOnXHover(addProjectButton)});
+addProjectButton.addEventListener("mouseout", () => {colorChangeAfterXHover(addProjectButton)});
 
 const createProjectTab = (project) => {
     const tab = document.createElement("li");
     tab.textContent = project.name;
-    tabList.appendChild(tab);
+    tabList.insertBefore(tab, addProjectButton);
 
     const deleteButton = createDeleteButton(tab);
     tab.appendChild(deleteButton);
@@ -14,46 +16,68 @@ const createProjectTab = (project) => {
     tab.addEventListener("mouseover", () => {colorChangeOnTabHover(tab)});
     tab.addEventListener("mouseout", () => {colorChangeAfterTabHover(tab)});
 
-    tabList.appendChild(tab);
+    tabList.insertBefore(tab, addProjectButton);
+}
+
+const deleteProjectTab = (tab) => {
+    tabList.removeChild(tab);
 }
 
 const createDeleteButton = (tab) => {
     const deleteButton = document.createElement("a");
     deleteButton.textContent = "x";
     deleteButton.setAttribute("href", "#");
-    deleteButton.addEventListener("click", () => {deleteProjectFromWorkspace(tab)});
+    deleteButton.addEventListener("click", () => {deleteProjectTab(tab)});
     deleteButton.addEventListener("mouseover", () => {colorChangeOnXHover(deleteButton)});
     deleteButton.addEventListener("mouseout", () => {colorChangeAfterXHover(deleteButton)});
     return deleteButton;
 }
 
-const deleteProjectFromWorkspace = (tab) => {
-    tabList.removeChild(tab);
+
+const createTodoRow = (todo) => {
+    const container = document.querySelector("#container");
+    
+    const todoRow = document.createElement("div");
+    todoRow.classList.add("todo");
+
+    const todoMini = createTodoMini(todo);
+    todoMini.classList.add("todo-mini")
+    const todoDetailed = document.createElement("div");
+    todoDetailed.classList.add("todo-detailed")
+
+    const todoDetailedContent = document.createElement("div");
+    todoDetailedContent.textContent = `${todo.description}, ${todo.notes}`;
+    todoDetailed.appendChild(todoDetailedContent);
+
+    todoRow.appendChild(todoMini);
+    todoRow.appendChild(todoDetailed);
+    container.appendChild(todoRow);
 }
 
-const createAddProjectButton = () => {
-    const addProjectButton = document.createElement("a");
-    addProjectButton.textContent = "+";
-    addProjectButton.setAttribute("href", "#");
-    addProjectButton.id = "add";
-    return addProjectButton;
+const createTodoMini = (todo) => {
+    const title = document.createElement("span");
+    title.classList.add("title");
+    title.textContent = todo.title;
+
+    const dueDate = document.createElement("span");
+    dueDate.classList.add("dueDate");
+    dueDate.textContent = todo.dueDate;
+
+    const priority = document.createElement("span");
+    priority.classList.add("priority");
+    priority.textContent = todo.priority;
+
+    const check = document.createElement("span");
+    check.classList.add("check");
+    check.textContent = todo.check;
+
+    const todoMini = document.createElement("div");
+    todoMini.appendChild(title);
+    todoMini.appendChild(dueDate);
+    todoMini.appendChild(priority);
+    todoMini.appendChild(check);
+
+    return todoMini;
 }
 
-const initializeWorkspace = () => {
-    const defaultProject = projectFactory("default");
-    createProjectTab(defaultProject);
-
-    const projectButton = createAddProjectButton();
-    projectButton.addEventListener("click", addProjectToWorkspace);
-    projectButton.addEventListener("mouseover", () => {colorChangeOnXHover(projectButton)});
-    projectButton.addEventListener("mouseout", () => {colorChangeAfterXHover(projectButton)});
-    tabList.appendChild(projectButton);
-}
-
-const addProjectToWorkspace = () => {
-    const projectName = prompt("Name of new project?");
-    const project = projectFactory(projectName);
-    createProjectTab(project);
-}
-
-export {createProjectTab, initializeWorkspace}
+export { createProjectTab, createTodoRow };

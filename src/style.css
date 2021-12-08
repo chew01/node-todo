@@ -11,8 +11,7 @@ ul {
     align-items: flex-end;
     gap: 20px;
     list-style-type: none;
-    margin: 0;
-    margin-left: 10px;
+    margin: 0px 0px 0px 10px;
     padding: 0;
 }
 
@@ -44,4 +43,45 @@ li a {
     margin-bottom: 5px;
     padding: 0px 4px;
     border-radius: 10px;
+}
+
+#container {
+    background-color: aqua;
+    padding: 10px;
+}
+
+.todo {
+    background-color: beige;
+    margin-bottom: 10px;
+}
+
+.todo-mini {
+    display: grid;
+    background-color: lightgrey;
+    padding: 10px;
+    border: 1px solid black;
+    grid-template-columns: 25% 25% 25% 25%;
+}
+
+.title {
+    grid-column: 1 / 2;
+}
+
+.dueDate {
+    grid-column: 2 / 3;
+}
+
+.priority {
+    grid-column: 3 / 4;
+}
+
+.check {
+    grid-column: 4 / 5;
+}
+
+.todo-detailed {
+    display: grid;
+    background-color: lightgrey;
+    padding: 10px;
+    border: 1px solid black
 }
