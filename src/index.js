@@ -1,9 +1,13 @@
-import './style.css';
-import initializeWorkspace from './modules/logic.js';
-import todoFactory from './modules/todo.js';
-import { createTodoRow } from './modules/workspace.js';
+import "./style.css";
+import { findProject } from "./modules/project";
+import { initializeSidebar } from "./modules/sidebar";
+import { initializeHeader, viewBranch } from "./modules/workspace";
+import { requestAddProject } from "./modules/logic";
 
-initializeWorkspace();
+if (!findProject("Default")) {
+  requestAddProject("Default");
+}
 
-const todo = todoFactory("Collect Fitness Tracker at HomeTeamNS","test","test","test","test","test");
-createTodoRow(todo);
+initializeSidebar();
+initializeHeader();
+viewBranch();
